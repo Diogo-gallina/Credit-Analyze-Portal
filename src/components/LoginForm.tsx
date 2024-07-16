@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const loginFormSchema = z.object({
   email: z.string()
@@ -16,6 +16,7 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
   const [output, setOutput] = useState<string>('');
+  const navigate = useNavigate();
 
   const { 
     register, 
@@ -27,6 +28,7 @@ export function LoginForm() {
 
   async function loginUser(data: LoginFormData) {
     setOutput(JSON.stringify(data, null, 2));
+    navigate('/upload');
   }
 
   return (
