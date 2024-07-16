@@ -1,65 +1,58 @@
-// src/components/UserForm.tsx
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { supabase } from '../lib/supabase';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-const createUserFormSchema = z.object({
+const loginFormSchema = z.object({
   email: z.string()
     .min(1, 'Email é obrigatório.')
     .email('Formato de e-mail inválido')
     .toLowerCase(),
-  password: z.string()
-    .min(8, 'A senha deve ter no mínimo 8 caracteres.'),
+  password: z.string(),
 });
 
-type CreateUserFormData = z.infer<typeof createUserFormSchema>
+type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
-  const [output, setOutput] = useState('')
+  const [output, setOutput] = useState<string>('');
 
   const { 
     register, 
     handleSubmit, 
     formState: { errors } 
-  } = useForm<CreateUserFormData>({
-    resolver: zodResolver(createUserFormSchema),
-  })
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginFormSchema),
+  });
 
-  async function createUser(data: any) {
-    await supabase.storage.from('forms-react').upload(
-      data.file.name, 
-      data.file
-    )
-    setOutput(JSON.stringify(data, null, 2))
+  async function loginUser(data: LoginFormData) {
+    setOutput(JSON.stringify(data, null, 2));
   }
-
-  console.log(errors)
 
   return (
     <form
-      onSubmit={handleSubmit(createUser)} 
-      className="flex flex-col gap-4 w-full max-w-xs"
+      onSubmit={handleSubmit(loginUser)} 
+      className="flex flex-col gap-6 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
     >
-
       <div className="flex flex-col gap-1">
         <label htmlFor="email">Email</label>
         <input 
-        type="email" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('email')}
+          id="email"
+          type="email" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('email')}
         />
-        {errors.email && <span>{errors.email.message}</span>}
+        {errors.email && <span className="text-red-600">{errors.email.message}</span>}
       </div>
 
       <div className="flex flex-col gap-1">
         <label htmlFor="password">Senha</label>
         <input
-        type="password" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('password')}
+          id="password"
+          type="password" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('password')}
         />
+        {errors.password && <span className="text-red-600">{errors.password.message}</span>}
       </div>
 
       <button
@@ -71,5 +64,5 @@ export function LoginForm() {
 
       <pre>{output}</pre>
     </form>
-  )
+  );
 }

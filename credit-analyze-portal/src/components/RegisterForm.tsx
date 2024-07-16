@@ -1,9 +1,8 @@
-// src/components/UserForm.tsx
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { supabase } from '../lib/supabase';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { cpf, cnpj } from 'cpf-cnpj-validator';
 
 const createUserFormSchema = z.object({
   name: z.string()
@@ -17,9 +16,9 @@ const createUserFormSchema = z.object({
     .min(1, 'Email é obrigatório.')
     .email('Formato de e-mail inválido')
     .toLowerCase(),
-  file: z.instanceof(FileList)
-    .transform(list => list.item(0))
-    .refine(file => file!.size <= 5 * 1024 * 1024, 'O arquivo pode ter no máximo 5mb'),
+  document: z.string().refine((doc) => cpf.isValid(doc) || cnpj.isValid(doc), {
+    message: 'Documento inválido. Deve ser um CPF ou CNPJ válido.',
+  }),
   password: z.string()
     .min(8, 'A senha deve ter no mínimo 8 caracteres.'),
   passwordConfirmation: z.string(),
@@ -33,10 +32,10 @@ const createUserFormSchema = z.object({
   }
 });
 
-type CreateUserFormData = z.infer<typeof createUserFormSchema>
+type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export function RegisterForm() {
-  const [output, setOutput] = useState('')
+  const [output, setOutput] = useState<string>('');
 
   const { 
     register, 
@@ -44,69 +43,70 @@ export function RegisterForm() {
     formState: { errors } 
   } = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserFormSchema),
-  })
+  });
 
-  async function createUser(data: any) {
-    await supabase.storage.from('forms-react').upload(
-      data.file.name, 
-      data.file
-    )
-    setOutput(JSON.stringify(data, null, 2))
+  async function createUser(data: CreateUserFormData) {
+    setOutput(JSON.stringify(data, null, 2));
   }
 
   return (
     <form
       onSubmit={handleSubmit(createUser)} 
-      className="flex flex-col gap-4 w-full max-w-xs"
+      className="flex flex-col gap-6 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
     >
       <div className="flex flex-col gap-1">
         <label htmlFor="name">Nome</label>
         <input 
-        type="nome" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('name')}
+          id="name"
+          type="text" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('name')}
         />
-        {errors.name && <span>{errors.name.message}</span>}
+        {errors.name && <span className="text-red-600">{errors.name.message}</span>}
       </div>
 
       <div className="flex flex-col gap-1">
         <label htmlFor="email">Email</label>
         <input 
-        type="email" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('email')}
+          id="email"
+          type="email" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('email')}
         />
-        {errors.email && <span>{errors.email.message}</span>}
+        {errors.email && <span className="text-red-600">{errors.email.message}</span>}
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label htmlFor="document">Documento (CPF/CNPJ)</label>
+        <input 
+          id="document"
+          type="text" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('document')}
+        />
+        {errors.document && <span className="text-red-600">{errors.document.message}</span>}
       </div>
 
       <div className="flex flex-col gap-1">
         <label htmlFor="password">Senha</label>
         <input
-        type="password" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('password')}
+          id="password"
+          type="password" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('password')}
         />
+        {errors.password && <span className="text-red-600">{errors.password.message}</span>}
       </div>
 
       <div className="flex flex-col gap-1">
         <label htmlFor="passwordConfirmation">Confirmação de Senha</label>
         <input
-        type="password" 
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('passwordConfirmation')}
+          id="passwordConfirmation"
+          type="password" 
+          className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
+          {...register('passwordConfirmation')}
         />
-        {errors.passwordConfirmation && <span>{errors.passwordConfirmation.message}</span>}
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <label htmlFor="file">Arquivo</label>
-        <input
-        type="file" 
-        accept="image/*"
-        className="border border-zinc-200 shadow-sm rounded h-10 px-3"  
-        {...register('file')}
-        />
-        {errors.file && <span>{errors.file.message}</span>}
+        {errors.passwordConfirmation && <span className="text-red-600">{errors.passwordConfirmation.message}</span>}
       </div>
 
       <button
@@ -118,5 +118,5 @@ export function RegisterForm() {
 
       <pre>{output}</pre>
     </form>
-  )
+  );
 }
