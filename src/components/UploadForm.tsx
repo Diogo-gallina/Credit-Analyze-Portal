@@ -19,7 +19,7 @@ const uploadFormSchema = z.object({
 type UploadFormData = z.infer<typeof uploadFormSchema>
 
 export function UploadForm() {
-  const [output, setOutput] = useState('')
+  const [_output, setOutput] = useState('')
   const [fileName, setFileName] = useState('')
 
   const { 
