@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cpf, cnpj } from 'cpf-cnpj-validator';
+import { Link } from 'react-router-dom';
 
 const createUserFormSchema = z.object({
   name: z.string()
@@ -122,7 +123,10 @@ export function RegisterForm() {
         Cadastrar
       </button>
 
-      <pre>{output}</pre>
+      <div className="text-center">
+        Já tem uma conta? <Link to="/login" className="text-blue-500">Entre!</Link>
+      </div>
+
     </form>
   );
 }

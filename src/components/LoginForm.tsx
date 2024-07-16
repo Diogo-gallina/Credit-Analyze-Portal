@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
 
 const loginFormSchema = z.object({
   email: z.string()
@@ -49,7 +50,7 @@ export function LoginForm() {
         />
         {errors.email && <span className="text-red-600">{errors.email.message}</span>}
       </div>
-
+      
       <div className="flex flex-col gap-1">
         <label htmlFor="password">Senha</label>
         <input
@@ -68,7 +69,10 @@ export function LoginForm() {
         Entrar
       </button>
 
-      <pre>{output}</pre>
+      <div className="text-center">
+        Não tem conta ainda? <Link to="/register" className="text-blue-500">Registre-se!</Link>
+      </div>
+
     </form>
   );
 }
