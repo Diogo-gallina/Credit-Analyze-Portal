@@ -54,6 +54,12 @@ export function RegisterForm() {
       onSubmit={handleSubmit(createUser)} 
       className="flex flex-col gap-6 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
     >
+      <div className="flex flex-col items-center gap-2">
+        <label htmlFor="file" className="text-lg font-semibold text-gray-700">
+            Cadastro
+        </label>
+      </div>
+
       <div className="flex flex-col gap-1">
         <label htmlFor="name">Nome</label>
         <input 
