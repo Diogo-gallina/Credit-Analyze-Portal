@@ -36,7 +36,7 @@ const createUserFormSchema = z.object({
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export function RegisterForm() {
-  const [output, setOutput] = useState<string>('');
+  const [_output, setOutput] = useState<string>('');
 
   const { 
     register, 

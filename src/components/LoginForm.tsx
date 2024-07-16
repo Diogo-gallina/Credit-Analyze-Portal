@@ -15,7 +15,7 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
-  const [output, setOutput] = useState<string>('');
+  const [_output, setOutput] = useState<string>('');
   const navigate = useNavigate();
 
   const { 
