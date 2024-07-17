@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cpf, cnpj } from 'cpf-cnpj-validator';
 import { Link } from 'react-router-dom';
+import AccountContext from '../context/accountContext';
 
 const createUserFormSchema = z.object({
   name: z.string()
@@ -36,19 +37,34 @@ const createUserFormSchema = z.object({
 type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 
 export function RegisterForm() {
+  const accountContext = useContext(AccountContext);
+  const signUp = accountContext?.signUp;
+
   const [_output, setOutput] = useState<string>('');
 
   const { 
     register, 
     handleSubmit, 
-    formState: { errors } 
+    formState: { errors },
   } = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserFormSchema),
   });
 
-  async function createUser(data: CreateUserFormData) {
-    setOutput(JSON.stringify(data, null, 2));
-  }
+  const createUser = async (data: CreateUserFormData) => {
+    if (!signUp) {
+      setOutput('Sign up function is not available.');
+      return;
+    }
+
+    try {
+      const response = await signUp(data.name, data.email, data.document, data.password);
+      console.log({response})
+      setOutput('Registered Successfully! ' + response);
+    } catch (err) {
+        console.log('Registered Failure: ' + err)
+        setOutput('Registered Failure: ' + err);
+    }
+  };
 
   return (
     <form
@@ -126,7 +142,6 @@ export function RegisterForm() {
       <div className="text-center">
         Já tem uma conta? <Link to="/login" className="text-blue-500">Entre!</Link>
       </div>
-
     </form>
   );
 }
