@@ -33,7 +33,6 @@ export function LoginForm() {
     try {
       const response = await accountContext!.authenticate(data.email, data.password);
       setOutput('Login successful! ' + response);
-      if (response) navigate('/upload');
     } catch (err) {
       console.log("Failed to login: " + err);
       setOutput("Failed to login: " + err);
