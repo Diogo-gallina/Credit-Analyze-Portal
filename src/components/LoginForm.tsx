@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AccountContext from '../context/accountContext';
 
 const loginFormSchema = z.object({
@@ -17,9 +17,7 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
   const accountContext = useContext(AccountContext);
-
   const [_output, setOutput] = useState<string>('');
-  const navigate = useNavigate();
 
   const { 
     register, 
