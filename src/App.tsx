@@ -9,7 +9,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/register" element={<AccountState><Register /></AccountState>} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<AccountState><Login /></AccountState>} />
         <Route path="/upload" element={<Upload />} />
       </Routes>
     </Router>
