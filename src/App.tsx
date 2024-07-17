@@ -4,6 +4,7 @@ import ConfirmationAccount from './pages/ConfirmationAccount'
 import Login from './pages/Login'
 import Upload from './pages/Upload'
 import AccountState from './lib/aws-cognito/accountState'
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function App() {
   return (
