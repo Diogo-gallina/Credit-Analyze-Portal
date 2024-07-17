@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import AccountContext from '../context/accountContext';
 
 const loginFormSchema = z.object({
   email: z.string()
@@ -15,8 +16,8 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
+  const accountContext = useContext(AccountContext);
   const [_output, setOutput] = useState<string>('');
-  const navigate = useNavigate();
 
   const { 
     register, 
@@ -26,14 +27,20 @@ export function LoginForm() {
     resolver: zodResolver(loginFormSchema),
   });
 
-  async function loginUser(data: LoginFormData) {
-    setOutput(JSON.stringify(data, null, 2));
-    navigate('/upload');
+  async function authenticateUser(data: LoginFormData) {
+    try {
+      const response = await accountContext!.authenticate(data.email, data.password);
+      setOutput('Login successful! ' + response);
+    } catch (err) {
+      console.log("Failed to login: " + err);
+      setOutput("Failed to login: " + err);
+    }
   }
+
 
   return (
     <form
-      onSubmit={handleSubmit(loginUser)} 
+      onSubmit={handleSubmit(authenticateUser)} 
       className="flex flex-col gap-6 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg"
     >
       <div className="flex flex-col items-center gap-2">
