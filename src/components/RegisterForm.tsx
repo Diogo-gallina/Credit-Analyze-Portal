@@ -58,10 +58,8 @@ export function RegisterForm() {
 
     try {
       const response = await signUp(data.name, data.email, data.document, data.password);
-      console.log({response})
       setOutput('Registered Successfully! ' + response);
     } catch (err) {
-        console.log('Registered Failure: ' + err)
         setOutput('Registered Failure: ' + err);
     }
   };
