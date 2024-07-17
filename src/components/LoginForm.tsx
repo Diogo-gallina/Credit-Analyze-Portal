@@ -32,7 +32,6 @@ export function LoginForm() {
   async function authenticateUser(data: LoginFormData) {
     try {
       const response = await accountContext!.authenticate(data.email, data.password);
-      console.log({response});
       setOutput('Login successful! ' + response);
       if (response) navigate('/upload');
     } catch (err) {
