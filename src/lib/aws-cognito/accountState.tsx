@@ -87,8 +87,27 @@ const AccountState: React.FC<AccountStateProps> = ({ children }) => {
     });
   };
 
+  const resendConfirmationCode = async (email: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const cognitoUser = new CognitoUser({
+        Username: email,
+        Pool: userPool,
+      });
+
+      cognitoUser.resendConfirmationCode((err, result) => {
+        if (err) {
+          console.log('Error resending confirmation code:', err);
+          reject(`Failed to resend confirmation code: ${err.message}`);
+        } else {
+          console.log('Successfully resent confirmation code!', result);
+          resolve();
+        }
+      });
+    });
+  };
+
   return (
-    <AccountContext.Provider value={{ signUp, authenticate, confirmAccount }}>
+    <AccountContext.Provider value={{ signUp, authenticate, confirmAccount, resendConfirmationCode }}>
       {children}
     </AccountContext.Provider>
   );
