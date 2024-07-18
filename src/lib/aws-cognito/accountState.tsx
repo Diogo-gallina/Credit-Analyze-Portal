@@ -1,14 +1,27 @@
 import React, { ReactNode } from 'react';
-import AccountContext from '../../context/accountContext';
+
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserAttribute,
+  CognitoUserSession,
+  ICognitoUserAttributeData,
+} from 'amazon-cognito-identity-js';
+
 import userPool from './userPool';
-import { AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoUserSession, ICognitoUserAttributeData } from 'amazon-cognito-identity-js';
+import AccountContext from '../../context/accountContext';
 
 interface AccountStateProps {
   children: ReactNode;
 }
 
 const AccountState: React.FC<AccountStateProps> = ({ children }) => {
-  const signUp = async (name: string, email: string, document: string, password: string): Promise<string> => {
+  const signUp = async (
+    name: string,
+    email: string,
+    document: string,
+    password: string,
+  ): Promise<string> => {
     return new Promise((resolve, reject) => {
       const attributeList: CognitoUserAttribute[] = [];
 
@@ -39,11 +52,14 @@ const AccountState: React.FC<AccountStateProps> = ({ children }) => {
     });
   };
 
-  const authenticate = async(email: string, password: string): Promise<CognitoUserSession | void> => {
+  const authenticate = async (
+    email: string,
+    password: string,
+  ): Promise<CognitoUserSession | void> => {
     return new Promise((resolve, reject) => {
-      const cognitoUser = new CognitoUser({ 
+      const cognitoUser = new CognitoUser({
         Username: email,
-        Pool: userPool 
+        Pool: userPool,
       });
 
       const authenticationDetails = new AuthenticationDetails({
@@ -63,10 +79,10 @@ const AccountState: React.FC<AccountStateProps> = ({ children }) => {
         newPasswordRequired: (data) => {
           console.log('New password required: ' + data);
           resolve(data);
-        }
+        },
       });
     });
-  }
+  };
 
   const confirmAccount = async (email: string, code: string): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -107,7 +123,9 @@ const AccountState: React.FC<AccountStateProps> = ({ children }) => {
   };
 
   return (
-    <AccountContext.Provider value={{ signUp, authenticate, confirmAccount, resendConfirmationCode }}>
+    <AccountContext.Provider
+      value={{ signUp, authenticate, confirmAccount, resendConfirmationCode }}
+    >
       {children}
     </AccountContext.Provider>
   );
