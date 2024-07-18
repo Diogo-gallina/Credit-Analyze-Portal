@@ -8,8 +8,7 @@ export default function Home() {
           Credit Analyze
         </h2>
         <p className='text-lg text-gray-700 mb-8'>
-          Esta é a página inicial da sua aplicação. Navegue pelo site utilizando
-          os links acima.
+          Credit analysis home page. This web project is a developer challenge focused on using AWS solutions to solve specific use cases.
         </p>
       </div>
 
