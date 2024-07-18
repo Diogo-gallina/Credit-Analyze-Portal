@@ -46,6 +46,7 @@ export default function Contact() {
             <a
               href='https://github.com/Diogo-gallina'
               className='mt-2 text-blue-500'
+              target='_blank' rel='noopener noreferrer'
             >
               Github.com/Diogo-gallina
             </a>
