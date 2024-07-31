@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import AccountContext from '../context/accountContext';
@@ -20,6 +20,7 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function LoginForm() {
   const accountContext = useContext(AccountContext);
+  const navigate = useNavigate();
   const [_output, setOutput] = useState<string>('');
 
   const {
@@ -37,6 +38,7 @@ export function LoginForm() {
         data.password,
       );
       setOutput('Login successful! ' + response);
+      navigate('/upload');
     } catch (err) {
       console.log('Failed to login: ' + err);
       setOutput('Failed to login: ' + err);

@@ -3,7 +3,7 @@ import { useState, useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cpf, cnpj } from 'cpf-cnpj-validator';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import AccountContext from '../context/accountContext';
@@ -50,6 +50,7 @@ type CreateUserFormData = z.infer<typeof createUserFormSchema>;
 export function RegisterForm() {
   const accountContext = useContext(AccountContext);
   const signUp = accountContext?.signUp;
+  const navigate = useNavigate();
 
   const [_output, setOutput] = useState<string>('');
 
@@ -75,6 +76,7 @@ export function RegisterForm() {
         data.password,
       );
       setOutput('Registered Successfully! ' + response);
+      navigate('/confirmation-account');
     } catch (err) {
       setOutput('Registered Failure: ' + err);
     }
