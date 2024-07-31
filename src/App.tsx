@@ -8,6 +8,8 @@ import ConfirmationAccount from './pages/ConfirmationAccount';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Upload from './pages/Upload';
+import PrivateRoute from './components/PrivateRoute';
+
 
 //const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -43,7 +45,14 @@ export default function App() {
                 </AccountState>
               }
             />
-            <Route path='/upload' element={<Upload />} />
+            <Route
+              path='/upload'
+              element={
+                <AccountState>
+                  <PrivateRoute element={<Upload />} />
+                </AccountState>
+              }
+            />
           </Routes>
         </main>
         <Footer />
