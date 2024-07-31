@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import AccountContext from '../context/accountContext';
+import AccountContext from '../context/AccountContext';
 
 const confirmationAccountSchema = z.object({
   email: z.string().email('Email inválido').min(1, 'Email é obrigatório'),

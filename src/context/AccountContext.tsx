@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
 
 interface AccountContextType {
@@ -15,6 +14,8 @@ interface AccountContextType {
   ) => Promise<CognitoUserSession | void>;
   confirmAccount: (email: string, code: string) => Promise<void>;
   resendConfirmationCode: (email: string) => Promise<void>;
+  currentSession?: CognitoUserSession | null;
+  token?: string | null;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
