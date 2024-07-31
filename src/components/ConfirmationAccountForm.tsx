@@ -36,7 +36,6 @@ export function ConfirmationAccountForm() {
       setOutput('Confirmation successful!');
       navigate('/login');
     } catch (err) {
-      console.log('Failed to confirm account: ' + err);
       setOutput('Failed to confirm account: ' + err);
     }
   }
@@ -46,7 +45,6 @@ export function ConfirmationAccountForm() {
       await accountContext!.resendConfirmationCode(email);
       setOutput('Confirmation code resent successfully!');
     } catch (err) {
-      console.log('Failed to resend confirmation code: ' + err);
       setOutput('Failed to resend confirmation code: ' + err);
     }
   }

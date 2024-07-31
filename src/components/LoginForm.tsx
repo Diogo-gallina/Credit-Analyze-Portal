@@ -40,7 +40,6 @@ export function LoginForm() {
       setOutput('Login successful! ' + response);
       navigate('/upload');
     } catch (err) {
-      console.log('Failed to login: ' + err);
       setOutput('Failed to login: ' + err);
     }
   }

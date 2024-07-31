@@ -81,7 +81,6 @@ export function UploadForm() {
     formData.append('invoiceFile', file);
 
     try {
-      console.log(userData.name, userData.email, userData.document)
       const response = await fetch('http://localhost:8080/credit-analyze/analyze-invoice', {
         method: 'POST',
         body: formData,

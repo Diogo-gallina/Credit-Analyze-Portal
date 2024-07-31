@@ -31,7 +31,6 @@ export const signUp = async (
 
     userPool.signUp(email, password, attributeList, [], (err, result) => {
       if (err) {
-        console.log('Error signing up:', err);
         reject(`Failed to register: ${err.message}`);
       } else {
         resolve(`Account created successfully! ${result}`);
