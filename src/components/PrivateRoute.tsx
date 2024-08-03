@@ -5,9 +5,7 @@ import AccountContext from '../context/AccountContext';
 const PrivateRoute: React.FC<RouteProps> = ({ element, ...rest }) => {
   const accountContext = useContext(AccountContext);
 
-  if (!accountContext) {
-    return <Navigate to='/login' />;
-  }
+  if (!accountContext) return <Navigate to='/login' />;
 
   const { currentSession } = accountContext;
 
