@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Upload from './pages/Upload';
 import PrivateRoute from './components/PrivateRoute';
+import AnalyzeHistory from './pages/AnalyzeHistory';
 
 
 //const apiUrl = process.env.REACT_APP_API_URL;
@@ -50,6 +51,14 @@ export default function App() {
               element={
                 <AccountState>
                   <PrivateRoute element={<Upload />} />
+                </AccountState>
+              }
+            />
+            <Route
+              path='/analyze-history'
+              element={
+                <AccountState>
+                  <PrivateRoute element={<AnalyzeHistory />} />
                 </AccountState>
               }
             />
