@@ -5,7 +5,7 @@ export default function Header() {
         <div className='flex flex-wrap justify-between items-center mx-auto max-w-screen-xl'>
           <a href='/' className='flex items-center'>
             <img
-              src='/credit-logo.png'
+              src='/src/public/credit-logo.png'
               className='mr-3 h-6 sm:h-9'
               alt='Credit Analyze Logo'
             />
