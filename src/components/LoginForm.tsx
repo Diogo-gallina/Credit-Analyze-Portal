@@ -1,11 +1,10 @@
-import { useContext, useState } from 'react';
-
+import { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-
-import AccountContext from '../context/accountContext';
+import AccountContext from '../context/AccountContext';
+import { toast } from 'react-toastify';
 
 const loginFormSchema = z.object({
   email: z
@@ -21,7 +20,6 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 export function LoginForm() {
   const accountContext = useContext(AccountContext);
   const navigate = useNavigate();
-  const [_output, setOutput] = useState<string>('');
 
   const {
     register,
@@ -33,15 +31,18 @@ export function LoginForm() {
 
   async function authenticateUser(data: LoginFormData) {
     try {
-      const response = await accountContext!.authenticate(
-        data.email,
-        data.password,
-      );
-      setOutput('Login successful! ' + response);
+      const response = await accountContext!.authenticate(data.email, data.password);
+      toast.success('Login successful!', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
+      accountContext!.setSession(response!);
       navigate('/upload');
     } catch (err) {
-      console.log('Failed to login: ' + err);
-      setOutput('Failed to login: ' + err);
+      toast.error(`Incorrect username or password.`, {
+        position: 'bottom-right',
+        autoClose: 5000
+      });
     }
   }
 
@@ -70,7 +71,7 @@ export function LoginForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='password'>Senha</label>
+        <label htmlFor='password'>Password</label>
         <input
           id='password'
           type='password'
@@ -86,13 +87,13 @@ export function LoginForm() {
         type='submit'
         className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700'
       >
-        Entrar
+        Sign In
       </button>
 
       <div className='text-center'>
-        Não tem conta ainda?{' '}
+        Don't have an account yet?{' '}
         <Link to='/register' className='text-blue-500'>
-          Registre-se!
+          Get started!
         </Link>
       </div>
     </form>

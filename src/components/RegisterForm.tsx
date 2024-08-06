@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
-import AccountContext from '../context/accountContext';
+import AccountContext from '../context/AccountContext';
+import { toast } from 'react-toastify';
 
 const createUserFormSchema = z
   .object({
@@ -63,22 +64,39 @@ export function RegisterForm() {
   });
 
   const createUser = async (data: CreateUserFormData) => {
+    const toastId = toast.loading('Registering user...', {
+      position: 'bottom-right',
+      autoClose: false,
+    })
+
     if (!signUp) {
       setOutput('Sign up function is not available.');
       return;
     }
 
     try {
-      const response = await signUp(
+      await signUp(
         data.name,
         data.email,
         data.document,
         data.password,
       );
-      setOutput('Registered Successfully! ' + response);
+      toast.update(toastId, {
+        render: 'Registered Successfully!',
+        type: 'success',
+        position: 'bottom-right',
+        autoClose: 5000,
+        isLoading: false,
+      });
       navigate('/confirmation-account');
     } catch (err) {
-      setOutput('Registered Failure: ' + err);
+      toast.update(toastId, {
+        render: `Registered Failure: ${err}`,
+        type: 'error',
+        position: 'bottom-right',
+        autoClose: 5000,
+        isLoading: false,
+      });
     }
   };
 
@@ -89,12 +107,12 @@ export function RegisterForm() {
     >
       <div className='flex flex-col items-center gap-2'>
         <label htmlFor='file' className='text-lg font-semibold text-gray-700'>
-          Cadastro
+          Register
         </label>
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='name'>Nome</label>
+        <label htmlFor='name'>Name</label>
         <input
           id='name'
           type='text'
@@ -120,7 +138,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='document'>Documento (CPF/CNPJ)</label>
+        <label htmlFor='document'>Document (CPF/CNPJ)</label>
         <input
           id='document'
           type='text'
@@ -133,7 +151,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='password'>Senha</label>
+        <label htmlFor='password'>Password</label>
         <input
           id='password'
           type='password'
@@ -146,7 +164,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='passwordConfirmation'>Confirmação de Senha</label>
+        <label htmlFor='passwordConfirmation'>Confirmation password</label>
         <input
           id='passwordConfirmation'
           type='password'
@@ -164,13 +182,13 @@ export function RegisterForm() {
         type='submit'
         className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700'
       >
-        Cadastrar
+        Sign Up
       </button>
 
       <div className='text-center'>
-        Já tem uma conta?{' '}
+        Already have an account?{' '}
         <Link to='/login' className='text-blue-500'>
-          Entre!
+          Sign In!
         </Link>
       </div>
     </form>
