@@ -16,6 +16,9 @@ interface AccountContextType {
   resendConfirmationCode: (email: string) => Promise<void>;
   currentSession?: CognitoUserSession | null;
   token?: string | null;
+  signOut: () => void;
+  loading: boolean;
+  setSession: (session: CognitoUserSession) => void;
 }
 
 const AccountContext = createContext<AccountContextType | undefined>(undefined);
