@@ -7,7 +7,9 @@ const PrivateRoute: React.FC<RouteProps> = ({ element, ...rest }) => {
 
   if (!accountContext) return <Navigate to='/login' />;
 
-  const { currentSession } = accountContext;
+  const { currentSession, loading } = accountContext;
+
+  if (loading) return <div>Loading...</div>;
 
   return currentSession ? element : <Navigate to='/login' />;
 };
