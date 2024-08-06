@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
@@ -11,61 +13,26 @@ import Upload from './pages/Upload';
 import PrivateRoute from './components/PrivateRoute';
 import AnalyzeHistory from './pages/AnalyzeHistory';
 
-
-//const apiUrl = process.env.REACT_APP_API_URL;
-
 export default function App() {
   return (
     <Router>
-      <div className='flex flex-col min-h-screen'>
-        <Header />
-        <main className='flex-grow'>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route
-              path='/register'
-              element={
-                <AccountState>
-                  <Register />
-                </AccountState>
-              }
-            />
-            <Route
-              path='/confirmation-account'
-              element={
-                <AccountState>
-                  <ConfirmationAccount />
-                </AccountState>
-              }
-            />
-            <Route
-              path='/login'
-              element={
-                <AccountState>
-                  <Login />
-                </AccountState>
-              }
-            />
-            <Route
-              path='/upload'
-              element={
-                <AccountState>
-                  <PrivateRoute element={<Upload />} />
-                </AccountState>
-              }
-            />
-            <Route
-              path='/analyze-history'
-              element={
-                <AccountState>
-                  <PrivateRoute element={<AnalyzeHistory />} />
-                </AccountState>
-              }
-            />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AccountState>
+        <div className='flex flex-col min-h-screen'>
+          <Header />
+          <main className='flex-grow'>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/confirmation-account' element={<ConfirmationAccount />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/upload' element={<PrivateRoute element={<Upload />} />} />
+              <Route path='/analyze-history' element={<PrivateRoute element={<AnalyzeHistory />} />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </AccountState>
+      <ToastContainer />
     </Router>
   );
 }
