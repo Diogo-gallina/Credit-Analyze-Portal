@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import AccountContext from '../context/AccountContext';
+import { toast } from 'react-toastify';
 
 const confirmationAccountSchema = z.object({
   email: z.string().email('Email inválido').min(1, 'Email é obrigatório'),
@@ -33,19 +34,31 @@ export function ConfirmationAccountForm() {
   async function confirmetionCode(data: ConfirmationAccountData) {
     try {
       await accountContext!.confirmAccount(data.email, data.confirmationCode);
-      setOutput('Confirmation successful!');
+      toast.success('Confirmation successful!', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
       navigate('/login');
     } catch (err) {
-      setOutput('Failed to confirm account: ' + err);
+      toast.error('Invalid code provided', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
     }
   }
 
   async function resendCode(email: string) {
     try {
       await accountContext!.resendConfirmationCode(email);
-      setOutput('Confirmation code resent successfully!');
+      toast.success('Confirmation code resent successfully!', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
     } catch (err) {
-      setOutput('Failed to resend confirmation code: ' + err);
+      toast.error('Failed to resend confirmation code', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
     }
   }
 
@@ -107,8 +120,6 @@ export function ConfirmationAccountForm() {
           Reenviar código
         </button>
       </div>
-
-      {_output && <p>{_output}</p>}
     </form>
   );
 }

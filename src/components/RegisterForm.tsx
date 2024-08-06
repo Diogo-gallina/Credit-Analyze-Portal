@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import AccountContext from '../context/AccountContext';
+import { toast } from 'react-toastify';
 
 const createUserFormSchema = z
   .object({
@@ -63,22 +64,39 @@ export function RegisterForm() {
   });
 
   const createUser = async (data: CreateUserFormData) => {
+    const toastId = toast.loading('Registering user...', {
+      position: 'bottom-right',
+      autoClose: false,
+    })
+
     if (!signUp) {
       setOutput('Sign up function is not available.');
       return;
     }
 
     try {
-      const response = await signUp(
+      await signUp(
         data.name,
         data.email,
         data.document,
         data.password,
       );
-      setOutput('Registered Successfully! ' + response);
+      toast.update(toastId, {
+        render: 'Registered Successfully!',
+        type: 'success',
+        position: 'bottom-right',
+        autoClose: 5000,
+        isLoading: false,
+      });
       navigate('/confirmation-account');
     } catch (err) {
-      setOutput('Registered Failure: ' + err);
+      toast.update(toastId, {
+        render: `Registered Failure: ${err}`,
+        type: 'error',
+        position: 'bottom-right',
+        autoClose: 5000,
+        isLoading: false,
+      });
     }
   };
 

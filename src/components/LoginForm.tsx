@@ -1,11 +1,10 @@
-import { useContext, useState } from 'react';
-
+import { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-
 import AccountContext from '../context/AccountContext';
+import { toast } from 'react-toastify';
 
 const loginFormSchema = z.object({
   email: z
@@ -21,7 +20,6 @@ type LoginFormData = z.infer<typeof loginFormSchema>;
 export function LoginForm() {
   const accountContext = useContext(AccountContext);
   const navigate = useNavigate();
-  const [_output, setOutput] = useState<string>('');
 
   const {
     register,
@@ -33,14 +31,18 @@ export function LoginForm() {
 
   async function authenticateUser(data: LoginFormData) {
     try {
-      const response = await accountContext!.authenticate(
-        data.email,
-        data.password,
-      );
-      setOutput('Login successful! ' + response);
+      const response = await accountContext!.authenticate(data.email, data.password);
+      toast.success('Login successful!', {
+        position: 'bottom-right',
+        autoClose: 5000
+      })
+      accountContext!.setSession(response!);
       navigate('/upload');
     } catch (err) {
-      setOutput('Failed to login: ' + err);
+      toast.error(`Incorrect username or password.`, {
+        position: 'bottom-right',
+        autoClose: 5000
+      });
     }
   }
 
