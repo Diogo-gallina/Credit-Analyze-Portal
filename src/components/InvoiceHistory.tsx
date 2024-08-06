@@ -18,7 +18,6 @@ export const InvoiceHistory: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedResult, setSelectedResult] = useState<AnalyzedResult | null>(null);
   const accountContext = useContext(AccountContext);
-  const [_output, setOutput] = useState<string>('');
   const RESULTS_PER_PAGE = 5;
   const BACKEND_URL = 'http://localhost:8080/credit-analyze/analyze-history';
 

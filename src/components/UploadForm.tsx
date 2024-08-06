@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import userPool from '../lib/aws-cognito/userPool';
 import AccountContext from '../context/AccountContext';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const uploadFormSchema = z.object({
@@ -23,7 +22,6 @@ type UserAttributes = {
 
 export function UploadForm() {
   const [fileName, setFileName] = useState('');
-  const navigate = useNavigate();
   const [userData, setUserData] = useState({ name: '', email: '', document: '' });
   const accountContext = useContext(AccountContext);
 
