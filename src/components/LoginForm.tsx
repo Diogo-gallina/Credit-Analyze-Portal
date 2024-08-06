@@ -71,7 +71,7 @@ export function LoginForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='password'>Senha</label>
+        <label htmlFor='password'>Password</label>
         <input
           id='password'
           type='password'
@@ -87,13 +87,13 @@ export function LoginForm() {
         type='submit'
         className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700'
       >
-        Entrar
+        Sign In
       </button>
 
       <div className='text-center'>
-        Não tem conta ainda?{' '}
+        Don't have an account yet?{' '}
         <Link to='/register' className='text-blue-500'>
-          Registre-se!
+          Get started!
         </Link>
       </div>
     </form>

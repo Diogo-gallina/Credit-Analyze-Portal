@@ -125,25 +125,14 @@ export function UploadForm() {
   };
 
   return (
-    <div className='flex flex-col gap-9'>
-
-      <div className='flex justify-between gap-4'>
-        <button
-          type='button'
-          onClick={() => navigate('/analyze-history')}
-          className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700 w-full'
-        >
-          Historico de Resultados
-        </button>
-      </div>
-
+    <div className='flex flex-col gap-9 w-full'>
       <form
         onSubmit={handleSubmit(uploadFile)}
         className='flex flex-col gap-6 w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg'
       >
         <div className='flex flex-col items-center gap-2'>
           <label htmlFor='file' className='text-lg font-semibold text-gray-700'>
-            Arquivo da Nota Fiscal
+            Invoice Upload
           </label>
         </div>
 
@@ -161,10 +150,10 @@ export function UploadForm() {
               htmlFor='file'
               className='flex cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors'
             >
-              Escolher Arquivo
+              Select File
             </label>
             <span className='ml-3 text-gray-700 items-center'>
-              {fileName || 'Nenhum arquivo selecionado'}
+              {fileName || 'No file selected'}
             </span>
           </div>
           {errors.file && (
@@ -176,7 +165,7 @@ export function UploadForm() {
           type='submit'
           className='bg-sky-500 text-white font-semibold py-2 rounded-lg hover:bg-sky-700 transition-colors'
         >
-          Enviar para Análise
+          Send for Analysis
         </button>
       </form>
     </div>

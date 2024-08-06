@@ -107,12 +107,12 @@ export function RegisterForm() {
     >
       <div className='flex flex-col items-center gap-2'>
         <label htmlFor='file' className='text-lg font-semibold text-gray-700'>
-          Cadastro
+          Register
         </label>
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='name'>Nome</label>
+        <label htmlFor='name'>Name</label>
         <input
           id='name'
           type='text'
@@ -138,7 +138,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='document'>Documento (CPF/CNPJ)</label>
+        <label htmlFor='document'>Document (CPF/CNPJ)</label>
         <input
           id='document'
           type='text'
@@ -151,7 +151,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='password'>Senha</label>
+        <label htmlFor='password'>Password</label>
         <input
           id='password'
           type='password'
@@ -164,7 +164,7 @@ export function RegisterForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='passwordConfirmation'>Confirmação de Senha</label>
+        <label htmlFor='passwordConfirmation'>Confirmation password</label>
         <input
           id='passwordConfirmation'
           type='password'
@@ -182,13 +182,13 @@ export function RegisterForm() {
         type='submit'
         className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700'
       >
-        Cadastrar
+        Sign Up
       </button>
 
       <div className='text-center'>
-        Já tem uma conta?{' '}
+        Already have an account?{' '}
         <Link to='/login' className='text-blue-500'>
-          Entre!
+          Sign In!
         </Link>
       </div>
     </form>

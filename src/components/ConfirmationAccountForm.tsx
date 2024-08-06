@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,6 @@ type ConfirmationAccountData = z.infer<typeof confirmationAccountSchema>;
 
 export function ConfirmationAccountForm() {
   const accountContext = useContext(AccountContext);
-
-  const [_output, setOutput] = useState<string>('');
   const navigate = useNavigate();
 
   const {
@@ -72,7 +70,7 @@ export function ConfirmationAccountForm() {
           htmlFor='confirmation'
           className='text-lg font-semibold text-gray-700'
         >
-          Confirmação de conta
+          Confirmation Account
         </label>
       </div>
 
@@ -90,7 +88,7 @@ export function ConfirmationAccountForm() {
       </div>
 
       <div className='flex flex-col gap-1'>
-        <label htmlFor='confirmationCode'>Insira o código de confirmação</label>
+        <label htmlFor='confirmationCode'>Insert the confirmation code</label>
         <input
           id='confirmationCode'
           type='text'
@@ -109,7 +107,7 @@ export function ConfirmationAccountForm() {
           type='submit'
           className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700 w-full'
         >
-          Verificar
+          Verify
         </button>
 
         <button
@@ -117,7 +115,7 @@ export function ConfirmationAccountForm() {
           onClick={() => resendCode(getValues('email'))}
           className='bg-sky-500 rounded font-semibold text-white h-10 hover:bg-sky-700 w-full'
         >
-          Reenviar código
+          Resend code
         </button>
       </div>
     </form>
