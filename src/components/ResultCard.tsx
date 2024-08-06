@@ -15,7 +15,7 @@ interface ResultCardProps {
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ result, onClick }) => {
-  const bgColor = result.invoiceWasApproved ? 'bg-green-300' : 'bg-red-300';
+  const bgColor = result.invoiceWasApproved ? 'bg-green-400' : 'bg-red-300';
 
   return (
     <div
