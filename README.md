@@ -1,30 +1,76 @@
-# React + TypeScript + Vite
+# Project Description: Credit-Analyze-Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Credit-Analyze-Portal** is a robust and scalable solution developed to automate the analysis of invoices and offer loans to the end user based on the extracted data. The application utilizes a microservices architecture in Node.js and TypeScript, with a React frontend, designed to facilitate the process of uploading, extracting, and validating invoices, providing an intuitive and efficient user experience.
 
-Currently, two official plugins are available:
+## Architecture Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The architecture of **Credit-Analyze-Portal** is implemented on AWS, leveraging managed services to ensure high availability, security, and scalability. Below is a summary of the main components and their functionality:
 
-## Expanding the ESLint configuration
+## Main Components
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Frontend: Credit-Analyze-Portal
 
-- Configure the top-level `parserOptions` property like this:
+- **Technologies**: React, TypeScript, Tailwind CSS, AWS Amplify
+- **Features**:
+  - **Login and Registration**: User authentication using Amazon Cognito, which manages access and ensures data security.
+  - **File Upload**: Allows users to upload invoices in .png, .jpg, and .pdf formats.
+  - **Analysis History**: Displays the history of analysis requests made by the user, showing whether they were approved or rejected.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### Backend Microservices
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+#### Credit-Analyze-Invoice
+
+- **Responsibility**: Receives the invoice files uploaded from the frontend, stores them in Amazon S3, extracts relevant data using Amazon Textract, and publishes this data to SQS for further processing.
+- **Technologies**: Node.js, TypeScript, Amazon S3, Amazon Textract, SQS
+
+#### Credit-Analyze-Credit-Engine
+
+- **Responsibility**: Validates the extracted invoice data, checking payment date and CPF/CNPJ. After validation, it publishes the result (APPROVED or REJECTED) to another SQS topic.
+- **Technologies**: Node.js, TypeScript, SQS, MongoDB Atlas
+
+### Data Storage
+
+- **Amazon S3**: Stores the invoice files uploaded by users.
+- **MongoDB Atlas**: Database used to store the processed invoice data and analysis results.
+
+### Communication and Messaging
+
+- **SQS**: Implements asynchronous communication between microservices, orchestrating messages between different parts of the system:
+  - **Queue invoice-data-extracted**: Publishes the extracted invoice data.
+  - **Queue invoice-validation-result**: Publishes the invoice validation result.
+
+### Automation and Notification
+
+- **Nodemailer**: Service used to send email notifications to users with the results of the analyses performed.
+
+## Workflow
+
+1. **Authentication**: The user accesses the Credit-Analyze-Portal and logs in or registers through Amazon Cognito.
+2. **File Upload**: The user uploads an invoice. The Credit-Analyze-Invoice service stores the file in Amazon S3 and extracts relevant data using Amazon Textract.
+3. **Data Publication**: The extracted data is published to the invoice-data-extracted queue in SQS.
+4. **Validation**: The Credit-Analyze-Credit-Engine service consumes the data from SQS, validates the information (such as payment date and CPF/CNPJ), and publishes the result to the invoice-validation-result queue.
+5. **Notification and Display**: The analysis result is sent to the user via email using Nodemailer and is also displayed on the frontend in the analysis history section.
+
+## Benefits and Considerations
+
+- **Scalability**: The microservices architecture and use of SQS allow the system to easily scale to handle a large volume of data and requests.
+- **Security**: Authentication and authorization are managed by Amazon Cognito, ensuring that only authorized users have access to system functionalities.
+- **Automation**: Automatic extraction and validation of invoice data reduce the need for manual intervention, providing a faster and more efficient user experience.
+- **Modularity**: The clear separation between microservices allows for easier maintenance and the possibility of evolving the system in a modular fashion.
+
+
+### 🤝 Contributors
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="#">
+        <img src="https://avatars.githubusercontent.com/u/88459755?v=4" width="100px;" border-radius='50%' alt="Diogo Gallina's photo on GitHub"/><br>
+        <sub>
+          <b>Diogo Gallina</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
